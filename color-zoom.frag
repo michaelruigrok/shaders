@@ -9,35 +9,38 @@ uniform float u_time;
 bool DEBUG = true;
 
 float zoom(float mouse, float pt) {
-	float zoom;
+	float newPos;
 
 	if (mouse > 0.5) {
-		//x.max = 1
-		//0 <= x.min <= 0.5
 		
-		float stretchOffset = mouse - 0.5; // 0 <= stretchOffset <= 0.5
-		// mouse = 0.5 ~~ zoom = *1
-		// mouse = 1   ~~ zoom = *.5
-		zoom = pt * (1.0 - stretchOffset) + stretchOffset;
+		// mouse = 0.5 iff zoom = *1
+		// mouse = 1   iff zoom = *2
+		float zoom = mouse * 2.0; // 1 < zoom <= 2
 
-		if (DEBUG && zoom >= 1.0) zoom = 0.0;
-		if (DEBUG && pt < 0.02) zoom = 1.0;
+		newPos = pt / zoom
+		   	+ mouse - 0.5; // Align zoom flush to the ceiling
+						   // It's the floor that's supposed to scale
+
+		if (DEBUG && newPos >= 1.0) newPos = 0.0;
+		if (DEBUG && pt < 0.02) newPos = 1.0;
+
 	} else {
-		//x.min = 0
-		//0.5 <= x.max <= 1
 
-		// mouse = 0.5 ~~ zoom = *1
-		// mouse = 0   ~~ zoom = *.5
-		zoom = pt * (0.5 + mouse);
-		if (DEBUG && zoom <= 0.0) zoom = 1.0;
-		if (DEBUG && pt > 0.98) zoom = 0.0;
+		// mouse = 0.5 iff zoom = *1
+		// mouse = 0   iff zoom = *2
+		float zoom = (1.0 - mouse) * 2.0; // 1 < zoom <= 2
+
+		newPos = pt / zoom;
+
+		if (DEBUG && newPos <= 0.0) newPos = 1.0;
+		if (DEBUG && pt > 0.98) newPos = 0.0;
 	}
 
-	if (DEBUG && zoom > 0.495 && zoom < 0.505) {
-		zoom = 0.0;
+	if (DEBUG && newPos > 0.495 && newPos < 0.505) {
+		newPos = 0.0;
 	}
 
-	return zoom;
+	return newPos;
 }
 
 void main() {
@@ -45,7 +48,7 @@ void main() {
 	vec2 ms = u_mouse/u_resolution;
 	
 	gl_FragColor = vec4(zoom(ms.x, st.x),
-						zoom(ms.y, st.y),
-						abs(sin(u_time / 4.)) * 0.8 - 0.1,
+						zoom(ms.x, st.x),
+						zoom(ms.x, st.x),
 						1.0);
 }
