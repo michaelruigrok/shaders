@@ -15,17 +15,21 @@ float zoom(float mouse, float pt) {
 		//x.max = 1
 		//0 <= x.min <= 0.5
 		
-		float zoomOffset = mouse - 0.5;
+		float stretchOffset = mouse - 0.5; // 0 <= stretchOffset <= 0.5
 		// mouse = 0.5 ~~ zoom = *1
 		// mouse = 1   ~~ zoom = *.5
-		zoom = pt * (1.0 - zoomOffset) + zoomOffset;
-		if (DEBUG && zoom == 1.0) zoom = 0.0;
+		zoom = pt * (1.0 - stretchOffset) + stretchOffset;
+
+		if (DEBUG && zoom >= 1.0) zoom = 0.0;
 		if (DEBUG && pt < 0.02) zoom = 1.0;
 	} else {
 		//x.min = 0
 		//0.5 <= x.max <= 1
+
+		// mouse = 0.5 ~~ zoom = *1
+		// mouse = 0   ~~ zoom = *.5
 		zoom = pt * (0.5 + mouse);
-		if (DEBUG && zoom == 1.0) zoom = 0.0;
+		if (DEBUG && zoom <= 0.0) zoom = 1.0;
 		if (DEBUG && pt > 0.98) zoom = 0.0;
 	}
 
