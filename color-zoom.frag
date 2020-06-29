@@ -48,7 +48,7 @@ void main() {
 	vec2 ms = u_mouse/u_resolution;
 	
 	gl_FragColor = vec4(zoom(ms.x, st.x),
-						zoom(ms.x, st.x),
-						zoom(ms.x, st.x),
+						zoom(ms.y, st.y),
+						abs(sin(u_time / 4.0)) * 0.8 - 0.1,
 						1.0);
 }
