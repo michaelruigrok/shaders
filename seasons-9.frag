@@ -18,5 +18,5 @@ void main() {
 
 	color -= (y * cos(u_time));
 
-	gl_FragColor = vec4(color,.8);
+	gl_FragColor = vec4(color,1.0);
 }

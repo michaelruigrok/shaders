@@ -19,5 +19,5 @@ void main() {
 
 	color -= (y * 2.);
 
-	gl_FragColor = vec4(color, .8);
+	gl_FragColor = vec4(color, 1.0);
 }
