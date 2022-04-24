@@ -14,6 +14,5 @@ void main() {
 
 	float y = dot(st, st);
 	color = vec3(y);
-
-	gl_FragColor = vec4(pow(color, gl_FragCoord.xyz) + sin(u_time),1.0);
+	gl_FragColor = vec4(pow(color, vec3(gl_FragCoord.xy, 0.0)) + sin(u_time),1.0);
 }
